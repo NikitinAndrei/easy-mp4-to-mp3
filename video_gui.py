@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import os
+import os,sys
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -94,11 +94,10 @@ class Ui_VideoToAudio(object):
             self.pushButton.clicked.connect(lambda: self.convert_all())
         else: self.pushButton.setEnabled(False)
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    VideoToAudio = QtWidgets.QMainWindow()
-    ui = Ui_VideoToAudio()
-    ui.setupUi(VideoToAudio)
-    VideoToAudio.show()
-    sys.exit(app.exec_())
+
+app = QtWidgets.QApplication(sys.argv)
+VideoToAudio = QtWidgets.QMainWindow()
+ui = Ui_VideoToAudio()
+ui.setupUi(VideoToAudio)
+VideoToAudio.show()
+sys.exit(app.exec_())
