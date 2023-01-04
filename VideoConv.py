@@ -3,28 +3,6 @@ from moviepy.editor import *
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
-
-class Window(QMainWindow):
-    def __init__(self):
-        super(Window, self).__init__()
-
-        self.setWindowTitle("Видео в аудио")
-        self.setGeometry(300, 250, 300, 200)
-
-
-def application():
-    app = QApplication(sys.argv)
-    window = QMainWindow()
-
-    window.setWindowTitle("Видео в аудио")
-    window.setGeometry(300, 250, 300, 200)
-
-    # text =
-
-    window.show()
-    sys.exit(app.exec_())
-
-
 unconverted = []
 
 
@@ -48,11 +26,13 @@ def media():
             unconverted.append(i)
 
 
-def convert(video_file):
+def convert(video_file: str):
     path = os.getcwd()
-    video = VideoFileClip(f'{path}{video_file}')
-    video.audio.write_audiofile(f'{path}{video_file[:-4]}.mp3')
-    video.close()
+    if video_file[:-3]+'mp3' not in os.listdir(os.getcwd()):
+        video = VideoFileClip(f'{path}\{video_file}')
+        video.audio.write_audiofile(f'{path}\{video_file[:-4]}.mp3')
+        video.close()
+    else: print("Аудио от этого видео уже существует")
 
 
 def convertation():
@@ -63,8 +43,8 @@ def convertation():
 
 
 if __name__ == '__main__':
-    print(os.listdir(os.getcwd()))
     media()
+    convert('videoplayback.mp4')
 # print(os.chdir('C:/Users/Andreuff/VideoConverter'))
 # video = VideoFileClip(r'C:\Users\Andreuff\VideoConverter\НОВЫЙ ГОДд.mp4')
 # video.audio.write_audiofile(r'C:\Users\Andreuff\VideoConverter\taxi15.mp3')

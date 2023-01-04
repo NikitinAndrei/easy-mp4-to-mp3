@@ -9,16 +9,22 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os, sys
 
 
 class Ui_VideoToAudio(object):
+    def __init__(self):
+        self.unconverted = []
+
+
     def setupUi(self, VideoToAudio):
         VideoToAudio.setObjectName("VideoToAudio")
-        VideoToAudio.resize(442, 215)
+        VideoToAudio.setEnabled(True)
+        VideoToAudio.resize(442, 207)
         self.centralwidget = QtWidgets.QWidget(VideoToAudio)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(20, 20, 181, 16))
+        self.label.setGeometry(QtCore.QRect(130, 30, 182, 16))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.label.setFont(font)
@@ -26,15 +32,45 @@ class Ui_VideoToAudio(object):
         self.label.setScaledContents(False)
         self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label.setObjectName("label")
+        self.videos = QtWidgets.QLabel(self.centralwidget)
+        self.videos.setGeometry(QtCore.QRect(20, 50, 0, 13))
+        self.videos.setText("")
+        self.videos.setObjectName("videos")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setEnabled(False)
+        self.pushButton.setGeometry(QtCore.QRect(184, 160, 94, 23))
+        self.pushButton.setObjectName("pushButton")
         VideoToAudio.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(VideoToAudio)
         QtCore.QMetaObject.connectSlotsByName(VideoToAudio)
 
+        self.media()
+
+
     def retranslateUi(self, VideoToAudio):
         _translate = QtCore.QCoreApplication.translate
         VideoToAudio.setWindowTitle(_translate("VideoToAudio", "Видео в аудио"))
         self.label.setText(_translate("VideoToAudio", "Видео в папке и их аудио"))
+        self.pushButton.setText(_translate("VideoToAudio", "Конвертировать"))
+
+    def media(self):
+        files = os.listdir(os.getcwd())
+        video_names = []
+        audios = []
+        for i in files:
+            if '.mp4' in i:
+                video_names.append(i)
+            elif '.mp3' in i:
+                audios.append(i)
+
+        for i in video_names:
+            if i[:-1]+'3' in audios:
+                self.videos.setText(self.videos.text() + f'{i} конвертировано\n')
+            else:
+                self.videos.setText(self.videos.text() + f"{i} беспризорник\n")
+                self.unconverted.append(i)
+            self.videos.adjustSize()
 
 
 if __name__ == "__main__":
