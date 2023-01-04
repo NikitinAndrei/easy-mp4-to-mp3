@@ -24,15 +24,7 @@ class Ui_VideoToAudio(object):
         VideoToAudio.resize(200, 200)
         self.centralwidget = QtWidgets.QWidget(VideoToAudio)
         self.centralwidget.setObjectName("centralwidget")
-        # self.label = QtWidgets.QLabel(self.centralwidget)
-        # self.label.setGeometry(QtCore.QRect(130, 30, 182, 16))
-        # font = QtGui.QFont()
-        # font.setPointSize(11)
-        # self.label.setFont(font)
-        # self.label.setFrameShadow(QtWidgets.QFrame.Plain)
-        # self.label.setScaledContents(False)
-        # self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        # self.label.setObjectName("label")
+
         self.videos = QtWidgets.QLabel(self.centralwidget)
         self.videos.setGeometry(QtCore.QRect(5, 10, 0, 13))
         self.videos.setText("")
@@ -47,7 +39,6 @@ class Ui_VideoToAudio(object):
         QtCore.QMetaObject.connectSlotsByName(VideoToAudio)
 
         self.media()
-
 
     def retranslateUi(self, VideoToAudio):
         _translate = QtCore.QCoreApplication.translate
