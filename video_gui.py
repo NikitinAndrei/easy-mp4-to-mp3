@@ -9,36 +9,37 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import os, sys
+import os
+
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
 class Ui_VideoToAudio(object):
     def __init__(self):
         self.unconverted = []
 
-
     def setupUi(self, VideoToAudio):
         VideoToAudio.setObjectName("VideoToAudio")
         VideoToAudio.setEnabled(True)
-        VideoToAudio.resize(442, 207)
+        VideoToAudio.resize(200, 200)
         self.centralwidget = QtWidgets.QWidget(VideoToAudio)
         self.centralwidget.setObjectName("centralwidget")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(130, 30, 182, 16))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.label.setFont(font)
-        self.label.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.label.setScaledContents(False)
-        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label.setObjectName("label")
+        # self.label = QtWidgets.QLabel(self.centralwidget)
+        # self.label.setGeometry(QtCore.QRect(130, 30, 182, 16))
+        # font = QtGui.QFont()
+        # font.setPointSize(11)
+        # self.label.setFont(font)
+        # self.label.setFrameShadow(QtWidgets.QFrame.Plain)
+        # self.label.setScaledContents(False)
+        # self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        # self.label.setObjectName("label")
         self.videos = QtWidgets.QLabel(self.centralwidget)
-        self.videos.setGeometry(QtCore.QRect(20, 50, 0, 13))
+        self.videos.setGeometry(QtCore.QRect(5, 10, 0, 13))
         self.videos.setText("")
         self.videos.setObjectName("videos")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setEnabled(False)
-        self.pushButton.setGeometry(QtCore.QRect(184, 160, 94, 23))
+        self.pushButton.setGeometry(QtCore.QRect(50, 160, 94, 23))
         self.pushButton.setObjectName("pushButton")
         VideoToAudio.setCentralWidget(self.centralwidget)
 
@@ -51,8 +52,24 @@ class Ui_VideoToAudio(object):
     def retranslateUi(self, VideoToAudio):
         _translate = QtCore.QCoreApplication.translate
         VideoToAudio.setWindowTitle(_translate("VideoToAudio", "Видео в аудио"))
-        self.label.setText(_translate("VideoToAudio", "Видео в папке и их аудио"))
+        # self.label.setText(_translate("VideoToAudio", "Видео в папке и их аудио"))
         self.pushButton.setText(_translate("VideoToAudio", "Конвертировать"))
+
+    def convert(self, video_file: str):
+        path = os.getcwd()
+        if video_file[:-3] + 'mp3' not in os.listdir(os.getcwd()):
+            video = VideoFileClip(f'{path}\{video_file}')
+            video.audio.write_audiofile(f'{path}\{video_file[:-4]}.mp3')
+            video.close()
+        else:
+            print("Аудио от этого видео уже существует")
+
+    def convert_all(self):
+        for i in self.unconverted:
+            self.convert(i)
+        self.videos.setText('')
+        self.unconverted = []
+        self.media()
 
     def media(self):
         files = os.listdir(os.getcwd())
@@ -66,12 +83,16 @@ class Ui_VideoToAudio(object):
 
         for i in video_names:
             if i[:-1]+'3' in audios:
-                self.videos.setText(self.videos.text() + f'{i} конвертировано\n')
+                self.videos.setText(self.videos.text() + f'{i} конвертирован\n')
             else:
                 self.videos.setText(self.videos.text() + f"{i} беспризорник\n")
                 self.unconverted.append(i)
             self.videos.adjustSize()
 
+        if self.unconverted:
+            self.pushButton.setEnabled(True)
+            self.pushButton.clicked.connect(lambda: self.convert_all())
+        else: self.pushButton.setEnabled(False)
 
 if __name__ == "__main__":
     import sys
