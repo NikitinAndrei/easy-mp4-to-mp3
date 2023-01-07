@@ -42,9 +42,9 @@ def convertation():
     else: print("Нечего конвертировать")
 
 
-if __name__ == '__main__':
-    media()
-    convert('videoplayback.mp4')
+media()
+convertation()
+
 # print(os.chdir('C:/Users/Andreuff/VideoConverter'))
 # video = VideoFileClip(r'C:\Users\Andreuff\VideoConverter\НОВЫЙ ГОДд.mp4')
 # video.audio.write_audiofile(r'C:\Users\Andreuff\VideoConverter\taxi15.mp3')
